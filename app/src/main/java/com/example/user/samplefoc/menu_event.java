@@ -109,24 +109,25 @@ txt_date.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
 
-                if(TextUtils.isEmpty(evnt_name)||txt_date.getText()==""||txt_time.getText()==""){
+           /*     if(TextUtils.isEmpty(evnt_name)||txt_date.getText()==""||txt_time.getText()==""){
 
                     Toast.makeText(getContext(),"Fill all fields",Toast.LENGTH_LONG).show();
                 }
-                else{
-
+                else{*/
 
                     Log.d("Target CAl", String.valueOf(target_cal.get(Calendar.MONTH)));
 
                     AlarmManager alarmManager = (AlarmManager)getActivity().getSystemService(ALARM_SERVICE);
 
-                    Intent i =new Intent(getContext(),AlarmRecBroadcast.class);
+                    Intent i =new Intent(getContext().getApplicationContext(),AlarmRecBroadcast.class);
+                Log.d("Title from menu_evnt",evnt_name);
+                    i.putExtra("Title",evnt_name);
 
-                    PendingIntent pendingIntent =PendingIntent.getBroadcast(getContext(),0,i,0);
+                    PendingIntent pendingIntent =PendingIntent.getBroadcast(getContext().getApplicationContext(),0,i,0);
                     Log.d("Target time", String.valueOf(target_cal.getTime()));
                     alarmManager.set(AlarmManager.RTC,target_cal.getTimeInMillis(),pendingIntent);
 
-               }
+          /*     }*/
 
 
 

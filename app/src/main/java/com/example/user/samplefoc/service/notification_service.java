@@ -31,11 +31,14 @@ public class notification_service extends Service {
         PendingIntent pendingNotificationIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent1,0);
 
         //  Notification notification = new Notification(R.drawable.lightbulb,"See My App something for you", System.currentTimeMillis());
-
+//
+        //.setContentTitle(intent.getStringExtra("Title"))
+//        Log.d("Title from Not",intent.getStringExtra("Title"));
         Notification n  = null;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
             n = new Notification.Builder(this)
                     .setContentTitle("New mail from " + "test@gmail.com")
+
                     .setContentText("Subject")
                     .setSmallIcon(R.drawable.logo)
                     .setContentIntent(pendingNotificationIntent)

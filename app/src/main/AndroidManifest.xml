@@ -21,6 +21,9 @@
             android:name=".userNavigation"
             android:label="@string/title_activity_user_navigation"
             android:theme="@style/AppTheme"></activity>
+        <receiver android:name=".Broadcast.AlarmRecBroadcast">
+        </receiver>
+        <service android:name=".service.notification_service"></service>
     </application>
 
 </manifest>

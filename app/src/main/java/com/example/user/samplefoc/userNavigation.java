@@ -1,11 +1,18 @@
 package com.example.user.samplefoc;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,10 +23,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
+import static com.example.user.samplefoc.MainActivity.MyPREFERENCES;
 
 public class userNavigation extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    Button btn_cam;
+    ImageView profileimageView;
+    private static int RESULT_LOAD_IMAGE = 1;
+
+    private static final int CAMERA_REQUEST = 1888;
+    String userChoosenTask;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,17 +51,13 @@ public class userNavigation extends AppCompatActivity
 
 
 //To get value from the login form
-        Intent I = getIntent();
+        /*Intent I = getIntent();
         Bundle b= I.getExtras();
-        String name = b.getString("UserName");
+        String name = b.getString("UserName");*/
        // Log.e("name from uerNavigation",name);
+
         TextView t;
-
-
-
-
-
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+       Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         //toolbar.setTitle("Home");
         setSupportActionBar(toolbar);
 
@@ -60,14 +79,107 @@ public class userNavigation extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
         // To give username in the header of Nav_Menu
+
+
         View headerView = navigationView.getHeaderView(0);
         t=(TextView) headerView.findViewById(R.id.txt_user);
-        t.setText("Welcome "+name);
+        btn_cam=(Button)headerView.findViewById(R.id.buttoncam);
+         profileimageView=(ImageView)headerView.findViewById(R.id.circleView);
 
+        //Camera button click near profilePic
+
+
+btn_cam.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+selectImage();
+    }
+});
+
+
+        SharedPreferences prefrences = getSharedPreferences("MyPrefs",MODE_PRIVATE);
+        String name = prefrences.getString("name Key", null);
+        if(name!=null) {
+
+            t.setText("Welcome " + name);
+        }
         navigationView.setNavigationItemSelectedListener(this);
         displaySelectedScreen(R.id.nav_home);
     }
 
+    public void selectImage() {
+        final CharSequence[] items = { "Take Photo", "Choose from Library",
+                "Cancel" };
+        AlertDialog.Builder builder = new AlertDialog.Builder(userNavigation.this);
+        builder.setTitle("Add Photo!");
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                boolean result=Utility.checkPermission(userNavigation.this);
+Log.d("Result", String.valueOf(result));
+                if (items[item].equals("Take Photo")) {
+                    userChoosenTask="Take Photo";
+                    if(result)
+                        cameraIntent();
+                } else if (items[item].equals("Choose from Library")) {
+                    userChoosenTask="Choose from Library";
+                    if(result)
+                        galleryIntent();
+                } else if (items[item].equals("Cancel")) {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
+    }
+
+    private void cameraIntent() {
+
+
+        Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+    }
+
+    private void galleryIntent()
+    {
+
+        Intent i = new Intent(Intent.ACTION_PICK,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(i,RESULT_LOAD_IMAGE);
+    }
+
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode ==RESULT_OK && data !=null) {
+            if (requestCode == CAMERA_REQUEST) {
+                Bitmap photo = (Bitmap) data.getExtras().get("data");
+              //  ImageView profileimageView = (ImageView) findViewById(R.id.circleView);
+                profileimageView.setImageBitmap(photo);
+            }
+
+            if (requestCode == RESULT_LOAD_IMAGE) {
+                onGallaryImageResult(data);
+
+            }
+        }
+    }
+
+    private void onGallaryImageResult(Intent data)
+    {
+        Uri selectedImage = data.getData();
+        InputStream imageStream = null;
+        try {
+            imageStream = getContentResolver().openInputStream(selectedImage);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        //ImageView profileImageView = (ImageView) findViewById(R.id.circleView);
+        Bitmap yourSelectedImage = BitmapFactory.decodeStream(imageStream);
+
+        profileimageView.setImageBitmap(yourSelectedImage);
+
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -162,4 +274,6 @@ public class userNavigation extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
     }
+
+
 }

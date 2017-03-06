@@ -1,6 +1,8 @@
 package com.example.user.samplefoc;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +34,12 @@ Button btn_login,btn_signup,btn_create;
     TextView user,pass;
     String username, password,query;
     SQLiteDatabase db;
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    public static final String Name = "nameKey";
+    public static final String passwrd = "passKey";
+
+
+  public   SharedPreferences sharedpreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,9 +97,16 @@ Button btn_login,btn_signup,btn_create;
 if(Password.equals(password)) {
     //Intent i = new Intent(MainActivity.this, userpanel.class);
     Intent i = new Intent(MainActivity.this,userNavigation.class);
-    Bundle b=new Bundle();
+   /* Bundle b=new Bundle();
     b.putString("UserName",UserName);
-    i.putExtras(b);
+    i.putExtras(b);*/
+
+    SharedPreferences prefrences = getSharedPreferences("MyPrefs",MODE_PRIVATE);
+    SharedPreferences.Editor editor = prefrences.edit();
+
+    editor.putString(Name, UserName);
+    editor.putString(passwrd,Password);
+    editor.commit();
     startActivity(i);
 
 }

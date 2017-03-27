@@ -10,6 +10,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.user.samplefoc.MapsActivity" />
+
 <TextView
 android:id="@+id/latlongLocation"
 android:layout_width="fill_parent"

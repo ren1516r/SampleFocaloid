@@ -12,6 +12,15 @@ private String pro_pk_id;
     private  String pro_name;
     private double pro_price;
     private String product_images;
+    private  String pro_desc;
+
+    public String getPro_desc() {
+        return pro_desc;
+    }
+
+    public void setPro_desc(String pro_desc) {
+        this.pro_desc = pro_desc;
+    }
 
     public String getProduct_images() {
         return product_images;

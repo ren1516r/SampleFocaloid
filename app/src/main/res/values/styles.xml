@@ -1,4 +1,6 @@
-<resources>
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
 
     <!-- Base application theme. -->
     <!-- <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"> -->
@@ -7,10 +9,15 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
     </style>
 <!--ThemeOverlay.AppCompat.Dark.ActionBar  ThemeOverlay.AppCompat.Light-->
     <style name="AppTheme.AppBarOverlay" parent="Theme.AppCompat.Light.NoActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="Theme.AppCompat.Light.NoActionBar" />
+<style name="customTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="android:windowBackground">@drawable/bg</item>
+</style>
+    />
 
 </resources>

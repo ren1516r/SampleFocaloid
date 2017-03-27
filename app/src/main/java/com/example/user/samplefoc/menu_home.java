@@ -1,9 +1,11 @@
 package com.example.user.samplefoc;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import com.example.user.samplefoc.Adapter.productAdapter;
 import com.example.user.samplefoc.Interface.productAPI;
@@ -45,6 +48,8 @@ public class menu_home extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Home");
         initViews();
+
+
     }
 
    /* @Override
@@ -56,12 +61,13 @@ public class menu_home extends Fragment {
     private void initViews() {
         recyclerView = (RecyclerView)getView().findViewById(R.id.recycle);
         recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity().getApplicationContext(),2);
         recyclerView.setLayoutManager(layoutManager);
         loadJSON();
     }
 
     private void loadJSON() {
+        final ProgressDialog loading = ProgressDialog.show(getContext(),"Fetching Data","Please wait...",false,false);
         Retrofit retrofit = new Retrofit.Builder()
                // .baseUrl("http://shreehome.org")
                 .baseUrl("http://focalloid.com/Distributor_app/")
@@ -76,9 +82,10 @@ public class menu_home extends Fragment {
                 JSONResponse jsonResponse = response.body();
 
                 products = new ArrayList<>(Arrays.asList(jsonResponse.getProducts()));
-                Log.i("jsonResponse",Arrays.toString(jsonResponse.getProducts()));
+
                adapter = new productAdapter(products);
               recyclerView.setAdapter(adapter);
+                loading.dismiss();
             }
 
             @Override

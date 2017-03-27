@@ -24,6 +24,11 @@ public class Utility {
         int currentAPIVersion = Build.VERSION.SDK_INT;
         if(currentAPIVersion>= Build.VERSION_CODES.M)
         {
+           /* int permissionCheck = ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION);
+
+            if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+                //Execute location service call if user has explicitly granted ACCESS_FINE_LOCATION..
+            }*/
             if (ContextCompat.checkSelfPermission(context, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.READ_EXTERNAL_STORAGE)) {
                     AlertDialog.Builder alertBuilder = new AlertDialog.Builder(context);
@@ -48,6 +53,9 @@ public class Utility {
         } else {
             return true;
         }
+
+
+
     }
 
 }

@@ -25,11 +25,11 @@ Google Maps Android API v2, but are recommended.
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity">
-            <intent-filter>
+       <!--     <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <activity android:name=".signup" />
         <!-- <activity android:name=".userpanel" /> -->
@@ -56,7 +56,16 @@ Google Maps Android API v2, but are recommended.
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity android:name=".product_detail"></activity>
+        <activity android:name=".product_detail" />
+
+        <activity android:name=".Splsh"
+            android:theme="@style/customTheme">
+            <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+</intent-filter>
+        </activity>
     </application>
 
 </manifest>
